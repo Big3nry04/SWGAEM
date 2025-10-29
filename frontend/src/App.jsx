@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast';
 import LoginPage from './pages/auth/LoginPage';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import ProveedoresPage from './pages/admin/ProveedoresPage';
+import GestionInventario from './pages/GestionProducto';
 import './App.css';
 
 function App() {
@@ -20,6 +21,9 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
 
           <Route path="/proveedores" element={<ProveedoresPage />} />
+
+          {/* Ruta para Gestion de Productos e Inventario */}
+          <Route path="/productos" element={<GestionInventario />} />
           
           {/* Ruta para páginas no encontradas */}
           <Route path="*" element={<Navigate to="/login" replace />} />
