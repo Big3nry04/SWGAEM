@@ -3,7 +3,7 @@ import { Toaster } from 'react-hot-toast';
 import LoginPage from './pages/auth/LoginPage';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import ProveedoresPage from './pages/admin/ProveedoresPage';
-import './App.css';
+import ReportesPage from './pages/dashboard/Reportes';
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
           
           {/* Rutas principales */}
           <Route path="/dashboard" element={<DashboardPage />} />
-
+          <Route path="/reportes" element={<ReportesPage />} />
           <Route path="/proveedores" element={<ProveedoresPage />} />
           
           {/* Ruta para páginas no encontradas */}
