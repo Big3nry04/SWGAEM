@@ -3,7 +3,7 @@ import { Toaster } from 'react-hot-toast';
 import LoginPage from './pages/auth/LoginPage';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import ProveedoresPage from './pages/admin/ProveedoresPage';
-import './App.css';
+import GestionVentas from './pages/dashboard/venta'; 
 
 function App() {
   return (
@@ -11,15 +11,15 @@ function App() {
       <div className="min-h-screen bg-gray-50">
         <Routes>
           {/* Redirigir la ruta raíz al login */}
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<Navigate to="/venta" replace />} />
           
           {/* Rutas de autenticación */}
           <Route path="/login" element={<LoginPage />} />
           
           {/* Rutas principales */}
           <Route path="/dashboard" element={<DashboardPage />} />
-
           <Route path="/proveedores" element={<ProveedoresPage />} />
+          <Route path="/venta" element={<GestionVentas />} /> 
           
           {/* Ruta para páginas no encontradas */}
           <Route path="*" element={<Navigate to="/login" replace />} />
@@ -42,3 +42,4 @@ function App() {
 }
 
 export default App;
+

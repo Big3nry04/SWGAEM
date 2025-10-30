@@ -314,7 +314,7 @@ const DashboardPage = () => {
                 </div>
 
                 <div 
-                  onClick={() => navigate('/ventas')}
+                  onClick={() => navigate('/venta')}
                   className="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition duration-200 cursor-pointer"
                 >
                   <div className="p-5">
@@ -415,7 +415,7 @@ const DashboardPage = () => {
                 )}
 
                 <div 
-                  onClick={() => navigate('/ventas')}
+                  onClick={() => navigate('/venta')}
                   className="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition duration-200 cursor-pointer"
                 >
                   <div className="p-5">
