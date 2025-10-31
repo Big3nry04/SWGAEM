@@ -4,6 +4,9 @@ import LoginPage from './pages/auth/LoginPage';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import ProveedoresPage from './pages/admin/ProveedoresPage';
 import GestionVentas from './pages/dashboard/venta'; 
+import NuevaVenta from './pages/dashboard/NuevaVenta';
+import HistorialVentas from "./pages/dashboard/HistorialVentas";
+import GenerarComprobante from './pages/dashboard/GenerarComprobante';
 
 function App() {
   return (
@@ -20,6 +23,11 @@ function App() {
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/proveedores" element={<ProveedoresPage />} />
           <Route path="/venta" element={<GestionVentas />} /> 
+          <Route path="/nueva-venta" element={<NuevaVenta />} />
+          <Route path="/historial-ventas" element={<HistorialVentas />} />
+          <Route path="/generar-comprobante" element={<GenerarComprobante />} />
+
+
           
           {/* Ruta para páginas no encontradas */}
           <Route path="*" element={<Navigate to="/login" replace />} />

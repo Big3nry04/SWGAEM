@@ -1,6 +1,9 @@
 import { Plus, Search, FileText, Download, Clock, Users, ShoppingCart, BarChart3 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function GestionVentas() {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 p-6">
       {/* Header */}
@@ -13,7 +16,10 @@ export default function GestionVentas() {
           <span className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-full">
             Administrador
           </span>
-          <button className="text-gray-600 hover:text-blue-600 font-medium">
+          <button
+            onClick={() => navigate("/login")}
+            className="text-gray-600 hover:text-blue-600 font-medium"
+          >
             Cerrar Sesión
           </button>
         </div>
@@ -36,7 +42,11 @@ export default function GestionVentas() {
               <h2 className="text-lg font-semibold">Gestión de Ventas</h2>
               <p className="text-sm text-gray-500">Administre las ventas, consulte el historial y genere comprobantes</p>
             </div>
-            <button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
+            {/* 🔹 Botón Nueva Venta */}
+            <button
+              onClick={() => navigate("/nueva-venta")}
+              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition"
+            >
               <Plus size={18} /> Nueva Venta
             </button>
           </div>
@@ -51,7 +61,11 @@ export default function GestionVentas() {
                 className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none"
               />
             </div>
-            <button className="border border-gray-300 text-gray-600 px-3 py-2 rounded-lg hover:bg-gray-100 transition">
+            {/* 🔹 Botón Filtros → redirige a historial */}
+            <button
+              onClick={() => navigate("/historial-ventas")}
+              className="border border-gray-300 text-gray-600 px-3 py-2 rounded-lg hover:bg-gray-100 transition"
+            >
               Filtros
             </button>
           </div>
@@ -70,9 +84,24 @@ export default function GestionVentas() {
           <div className="bg-white rounded-2xl shadow p-5">
             <h3 className="text-lg font-semibold mb-4">Acciones Rápidas</h3>
             <div className="flex flex-col gap-3">
-              <ActionButton icon={<Plus size={18} />} text="Registrar Nueva Venta" />
-              <ActionButton icon={<Search size={18} />} text="Consultar Historial" />
-              <ActionButton icon={<FileText size={18} />} text="Generar Comprobante" />
+              <ActionButton
+                icon={<Plus size={18} />}
+                text="Registrar Nueva Venta"
+                onClick={() => navigate("/nueva-venta")}
+              />
+              {/* 🔹 Consultar Historial → redirige a historial */}
+              <ActionButton
+                icon={<Search size={18} />}
+                text="Consultar Historial"
+                onClick={() => navigate("/historial-ventas")}
+              />
+              
+              <ActionButton
+                icon={<FileText size={18} />}
+                text="Generar Comprobante"
+                onClick={() => navigate("/generar-comprobante")}
+              />
+
               <ActionButton icon={<Download size={18} />} text="Ver Reportes" />
             </div>
           </div>
@@ -106,9 +135,12 @@ function Card({ icon, title, value, subtitle }) {
 }
 
 // ⚙️ Action Button Component
-function ActionButton({ icon, text }) {
+function ActionButton({ icon, text, onClick }) {
   return (
-    <button className="flex items-center gap-3 border border-gray-200 rounded-lg px-4 py-2 hover:bg-blue-50 transition text-gray-700 hover:text-blue-700">
+    <button
+      onClick={onClick}
+      className="flex items-center gap-3 border border-gray-200 rounded-lg px-4 py-2 hover:bg-blue-50 transition text-gray-700 hover:text-blue-700"
+    >
       {icon}
       <span className="text-sm font-medium">{text}</span>
     </button>
