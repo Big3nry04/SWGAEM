@@ -1,9 +1,46 @@
 import React, { useState, useMemo } from "react";
+import {
+  ClipboardList,
+  DollarSign,
+  CheckCircle2,
+  Download,
+  Eye,
+  FilePenLine,
+  Trash2,
+  Search,
+  PlusCircle,
+  ChevronDown
+} from "lucide-react";
+
+const StatCard = ({ title, value, icon, color, customColors = {} }) => {
+  const colors = {
+    blue: "bg-[#4160BE]/10 text-[#4160BE]", // Usando color primario
+    green: "bg-green-100 text-green-600",
+    purple: "bg-purple-100 text-purple-600",
+    ...customColors
+  };
+  const selectedColor = colors[color] || colors.blue;
+
+  return (
+    <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm font-medium text-gray-600">{title}</p>
+          <p className="text-2xl font-bold text-gray-900">{value}</p>
+        </div>
+        <div className={`p-3 rounded-lg ${selectedColor}`}>
+          {React.cloneElement(icon, { className: "h-6 w-6" })}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const ComprasPage = () => {
   const [busqueda, setBusqueda] = useState("");
   const [filtroEstado, setFiltroEstado] = useState("todos");
 
+  // Datos de ejemplo
   const compras = [
     {
       id: "COMP-2024-001",
@@ -73,7 +110,7 @@ const ComprasPage = () => {
       
       return coincideBusqueda && coincideEstado;
     });
-  }, [busqueda, filtroEstado]);
+  }, [busqueda, filtroEstado, compras]); // Añadido 'compras' a las dependencias
 
   // Estadísticas
   const estadisticas = useMemo(() => {
@@ -81,9 +118,14 @@ const ComprasPage = () => {
     const montoTotal = comprasFiltradas.reduce((sum, compra) => sum + compra.monto, 0);
     const completadas = comprasFiltradas.filter(c => c.estado === "completada").length;
     
-    return { total, montoTotal, completadas };
+    return { 
+      total, 
+      montoTotal: montoTotal.toLocaleString('es-PE', { style: 'currency', currency: 'PEN' }), // Asumiendo PEN, ajusta si es necesario
+      completadas 
+    };
   }, [comprasFiltradas]);
 
+  // --- Handlers ---
   const handleVerDetalle = (compra) => {
     console.log("Ver detalle de compra:", compra);
     // Aquí iría la navegación o modal para ver detalles
@@ -93,17 +135,28 @@ const ComprasPage = () => {
     console.log("Editar compra:", compra);
     // Aquí iría la funcionalidad de edición
   };
+  
+  const handleEliminar = (compra) => {
+    console.log("Eliminar compra:", compra);
+    // Aquí iría la lógica de eliminación, p.ej. mostrar un modal de confirmación
+  };
 
   const handleExportar = () => {
     console.log("Exportar datos de compras");
     // Aquí iría la funcionalidad de exportación
   };
+  
+  const handleNuevaCompra = () => {
+    console.log("Crear nueva compra");
+    // Aquí iría la lógica para abrir un modal o navegar a una página de creación
+  };
 
+  // --- Funciones de Estilo ---
   const getColorEstado = (estado) => {
     const colores = {
       completada: "bg-green-100 text-green-800 border-green-200",
       pendiente: "bg-yellow-100 text-yellow-800 border-yellow-200",
-      proceso: "bg-blue-100 text-blue-800 border-blue-200",
+      proceso: "bg-[#4160BE]/10 text-[#4160BE] border-[#4160BE]/20", // Color primario
       cancelada: "bg-red-100 text-red-800 border-red-200"
     };
     return colores[estado] || "bg-gray-100 text-gray-800 border-gray-200";
@@ -111,65 +164,38 @@ const ComprasPage = () => {
 
   const getColorPrioridad = (prioridad) => {
     const colores = {
-      alta: "text-red-600 bg-red-50",
-      media: "text-orange-600 bg-orange-50",
-      baja: "text-green-600 bg-green-50"
+      alta: "text-red-600 bg-red-100",
+      media: "text-orange-600 bg-orange-100",
+      baja: "text-green-600 bg-green-100"
     };
-    return colores[prioridad] || "text-gray-600 bg-gray-50";
+    return colores[prioridad] || "text-gray-600 bg-gray-100";
   };
 
+  // --- Renderizado ---
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+    <div className="min-h-screen bg-slate-50">
       <div className="container mx-auto px-4 py-8">
-        {/* Encabezado */}
-        <header className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            Sistema de Gestión de Compras
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Control y seguimiento de adquisiciones empresariales
-          </p>
-        </header>
 
         {/* Tarjetas de estadísticas */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Total de Compras</p>
-                <p className="text-2xl font-bold text-gray-900">{estadisticas.total}</p>
-              </div>
-              <div className="p-3 bg-blue-100 rounded-lg">
-                <span className="text-blue-600 text-lg">📋</span>
-              </div>
-            </div>
-          </div>
-          
-          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Monto Total</p>
-                <p className="text-2xl font-bold text-gray-900">
-                  ${estadisticas.montoTotal.toLocaleString('es-PE')}
-                </p>
-              </div>
-              <div className="p-3 bg-green-100 rounded-lg">
-                <span className="text-green-600 text-lg">💰</span>
-              </div>
-            </div>
-          </div>
-          
-          <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-gray-600">Completadas</p>
-                <p className="text-2xl font-bold text-gray-900">{estadisticas.completadas}</p>
-              </div>
-              <div className="p-3 bg-purple-100 rounded-lg">
-                <span className="text-purple-600 text-lg">✅</span>
-              </div>
-            </div>
-          </div>
+          <StatCard 
+            title="Total de Compras" 
+            value={estadisticas.total} 
+            icon={<ClipboardList />} 
+            color="blue" // Usará el nuevo azul
+          />
+          <StatCard 
+            title="Monto Total (Filtrado)" 
+            value={estadisticas.montoTotal}
+            icon={<DollarSign />} 
+            color="green" 
+          />
+          <StatCard 
+            title="Completadas (Filtrado)" 
+            value={estadisticas.completadas} 
+            icon={<CheckCircle2 />} 
+            color="purple" 
+          />
         </div>
 
         {/* Panel principal */}
@@ -177,41 +203,65 @@ const ComprasPage = () => {
           {/* Header del panel con controles */}
           <div className="px-6 py-4 border-b border-gray-200 bg-gray-50">
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+              {/* Título */}
               <div>
-                <h2 className="text-xl font-semibold text-gray-800">Listado de Compras</h2>
+                <h2 className="text-xl font-semibold text-[#1E2C57]">Listado de Compras</h2>
                 <p className="text-sm text-gray-600 mt-1">
                   Gestiona y revisa todas las operaciones de compra
                 </p>
               </div>
               
-              <div className="flex flex-col sm:flex-row gap-3">
+              {/* Controles y Acciones */}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                {/* Búsqueda */}
+                <div className="relative w-full sm:w-64">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Search className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Buscar compra..."
+                    value={busqueda}
+                    onChange={(e) => setBusqueda(e.target.value)}
+                    className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4160BE] focus:border-[#4160BE] bg-white"
+                  />
+                </div>
+                
+                {/* Filtro Estado */}
+                <div className="relative w-full sm:w-auto">
+                  <select
+                    value={filtroEstado}
+                    onChange={(e) => setFiltroEstado(e.target.value)}
+                    className="w-full appearance-none px-4 py-2 pr-10 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#4160BE] focus:border-[#4160BE] bg-white"
+                  >
+                    <option value="todos">Todos los estados</option>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="proceso">En Proceso</option>
+                    <option value="completada">Completada</option>
+                    <option value="cancelada">Cancelada</option>
+                  </select>
+                  <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                    <ChevronDown className="h-5 w-5 text-gray-400" />
+                  </div>
+                </div>
+                
+                {/* Exportar */}
                 <button 
                   onClick={handleExportar}
-                  className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
+                  className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 bg-white"
                 >
-                  <span>📊</span>
+                  <Download className="h-4 w-4" />
                   Exportar
                 </button>
                 
-                <select
-                  value={filtroEstado}
-                  onChange={(e) => setFiltroEstado(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                {/* Nueva Compra */}
+                <button 
+                  onClick={handleNuevaCompra}
+                  className="px-4 py-2 bg-[#4160BE] text-white rounded-lg text-sm font-medium hover:bg-[#2A3E7A] transition-colors flex items-center justify-center gap-2"
                 >
-                  <option value="todos">Todos los estados</option>
-                  <option value="pendiente">Pendiente</option>
-                  <option value="proceso">En Proceso</option>
-                  <option value="completada">Completada</option>
-                  <option value="cancelada">Cancelada</option>
-                </select>
-                
-                <input
-                  type="text"
-                  placeholder="Buscar por código, proveedor o responsable..."
-                  value={busqueda}
-                  onChange={(e) => setBusqueda(e.target.value)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full sm:w-80"
-                />
+                  <PlusCircle className="h-4 w-4" />
+                  Nueva Compra
+                </button>
               </div>
             </div>
           </div>
@@ -221,25 +271,31 @@ const ComprasPage = () => {
             <table className="w-full">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="py-4 px-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Código
                   </th>
-                  <th className="py-4 px-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Proveedor
                   </th>
-                  <th className="py-4 px-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Fecha
                   </th>
-                  <th className="py-4 px-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Responsable
                   </th>
-                  <th className="py-4 px-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Prioridad
+                  </th>
+                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    Items
+                  </th>
+                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Monto
                   </th>
-                  <th className="py-4 px-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Estado
                   </th>
-                  <th className="py-4 px-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
+                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     Acciones
                   </th>
                 </tr>
@@ -252,33 +308,31 @@ const ComprasPage = () => {
                       className="hover:bg-gray-50 transition-colors duration-150"
                     >
                       <td className="py-4 px-4">
-                        <div className="flex flex-col">
-                          <span className="font-medium text-gray-900 text-sm">
-                            {compra.codigo}
-                          </span>
-                          <span className={`text-xs px-2 py-1 rounded-full ${getColorPrioridad(compra.prioridad)}`}>
-                            {compra.prioridad.toUpperCase()}
-                          </span>
-                        </div>
+                        <span className="font-medium text-gray-900 text-sm">
+                          {compra.codigo}
+                        </span>
                       </td>
                       <td className="py-4 px-4">
-                        <span className="text-sm text-gray-900">{compra.proveedor}</span>
+                        <span className="text-sm text-gray-800">{compra.proveedor}</span>
                       </td>
                       <td className="py-4 px-4">
                         <span className="text-sm text-gray-600">{compra.fechaFormateada}</span>
                       </td>
                       <td className="py-4 px-4">
-                        <span className="text-sm text-gray-900">{compra.responsable}</span>
+                        <span className="text-sm text-gray-800">{compra.responsable}</span>
                       </td>
                       <td className="py-4 px-4">
-                        <div className="flex flex-col">
-                          <span className="font-semibold text-gray-900 text-sm">
-                            {compra.montoFormateado}
-                          </span>
-                          <span className="text-xs text-gray-500">
-                            {compra.items} items
-                          </span>
-                        </div>
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getColorPrioridad(compra.prioridad)}`}>
+                          {compra.prioridad.charAt(0).toUpperCase() + compra.prioridad.slice(1)}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4">
+                         <span className="text-sm text-gray-600 text-center">{compra.items}</span>
+                      </td>
+                      <td className="py-4 px-4">
+                        <span className="font-semibold text-gray-900 text-sm">
+                          {compra.montoFormateado}
+                        </span>
                       </td>
                       <td className="py-4 px-4">
                         <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium border ${getColorEstado(compra.estado)}`}>
@@ -289,23 +343,24 @@ const ComprasPage = () => {
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => handleVerDetalle(compra)}
-                            className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                            className="p-2 text-gray-500 hover:text-[#4160BE] hover:bg-[#4160BE]/10 rounded-full transition-colors"
                             title="Ver detalle"
                           >
-                            <span className="text-lg">👁️</span>
+                            <Eye className="h-5 w-5" />
                           </button>
                           <button
                             onClick={() => handleEditar(compra)}
-                            className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                            className="p-2 text-gray-500 hover:text-green-600 hover:bg-green-100 rounded-full transition-colors"
                             title="Editar"
                           >
-                            <span className="text-lg">✏️</span>
+                            <FilePenLine className="h-5 w-5" />
                           </button>
                           <button
-                            className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                            onClick={() => handleEliminar(compra)}
+                            className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-100 rounded-full transition-colors"
                             title="Eliminar"
                           >
-                            <span className="text-lg">🗑️</span>
+                            <Trash2 className="h-5 w-5" />
                           </button>
                         </div>
                       </td>
@@ -313,13 +368,13 @@ const ComprasPage = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="7" className="py-12 text-center">
+                    <td colSpan="9" className="py-12 text-center">
                       <div className="flex flex-col items-center justify-center text-gray-500">
-                        <span className="text-4xl mb-4">🔍</span>
+                        <Search className="h-12 w-12 text-gray-400 mb-4" />
                         <p className="text-lg font-medium mb-2">No se encontraron resultados</p>
                         <p className="text-sm">
                           {busqueda || filtroEstado !== "todos" 
-                            ? `No hay compras que coincidan con "${busqueda}"${filtroEstado !== "todos" ? ` y estado "${filtroEstado}"` : ''}`
+                            ? `No hay compras que coincidan con tus filtros.`
                             : "No hay compras registradas"}
                         </p>
                       </div>

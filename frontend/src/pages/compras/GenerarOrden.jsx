@@ -1,10 +1,71 @@
 import React, { useState } from "react";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  FilePlus2,
+  Building2,
+  Phone,
+  User,
+  Building,
+  Target,
+  ShieldAlert,
+  CalendarDays,
+  MapPin,
+  CreditCard,
+  ClipboardPen,
+  Package,
+  Hash,
+  Ruler,
+  DollarSign,
+  PlusCircle,
+  Trash2,
+  RotateCcw,
+  Send,
+  CheckCircle2,
+  ChevronDown,
+} from "lucide-react";
+
+// Componente de Input con Icono
+const IconInput = ({ icon, ...props }) => (
+  <div className="relative">
+    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+      {React.cloneElement(icon, { className: "h-5 w-5 text-gray-400" })}
+    </div>
+    <input
+      {...props}
+      className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4160BE] focus:border-[#4160BE] transition-all duration-200"
+    />
+  </div>
+);
+
+// Componente de Select con Icono
+const IconSelect = ({ icon, children, ...props }) => (
+  <div className="relative">
+    <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+      {React.cloneElement(icon, { className: "h-5 w-5 text-gray-400" })}
+    </div>
+    <select
+      {...props}
+      className="w-full appearance-none pl-11 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4160BE] focus:border-[#4160BE] transition-all duration-200"
+    >
+      {children}
+    </select>
+    <div className="absolute inset-y-0 right-0 pr-3.5 flex items-center pointer-events-none">
+      <ChevronDown className="h-5 w-5 text-gray-400" />
+    </div>
+  </div>
+);
+
+// Componente de Textarea con Icono
+const IconTextarea = ({ icon, ...props }) => (
+  <div className="relative">
+    <div className="absolute top-3.5 left-0 pl-3.5 flex items-center pointer-events-none">
+      {React.cloneElement(icon, { className: "h-5 w-5 text-gray-400" })}
+    </div>
+    <textarea
+      {...props}
+      className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4160BE] focus:border-[#4160BE] transition-all duration-200"
+    />
+  </div>
+);
 
 const GenerarOrdenCompra = () => {
   const [formData, setFormData] = useState({
@@ -18,7 +79,9 @@ const GenerarOrdenCompra = () => {
     prioridad: "media",
     centroCosto: "",
     contactoProveedor: "",
-    productos: [{ id: 1, descripcion: "", cantidad: "", precio: "", unidad: "unidad" }],
+    productos: [
+      { id: 1, descripcion: "", cantidad: "", precio: "", unidad: "unidad" },
+    ],
   });
 
   const [mostrarConfirmacion, setMostrarConfirmacion] = useState(false);
@@ -31,7 +94,7 @@ const GenerarOrdenCompra = () => {
     "Operaciones",
     "Marketing",
     "Ventas",
-    "Logística"
+    "Logística",
   ];
 
   const unidades = [
@@ -42,7 +105,7 @@ const GenerarOrdenCompra = () => {
     "galón",
     "metro",
     "caja",
-    "paquete"
+    "paquete",
   ];
 
   const terminosPagoOptions = [
@@ -51,7 +114,7 @@ const GenerarOrdenCompra = () => {
     "30 días",
     "60 días",
     "90 días",
-    "Crédito comercial"
+    "Crédito comercial",
   ];
 
   const handleChange = (name, value) => {
@@ -65,23 +128,36 @@ const GenerarOrdenCompra = () => {
   };
 
   const agregarProducto = () => {
-    const nuevoId = Math.max(...formData.productos.map(p => p.id)) + 1;
+    const nuevoId =
+      formData.productos.length > 0
+        ? Math.max(...formData.productos.map((p) => p.id)) + 1
+        : 1;
     setFormData({
       ...formData,
       productos: [
-        ...formData.productos, 
-        { id: nuevoId, descripcion: "", cantidad: "", precio: "", unidad: "unidad" }
+        ...formData.productos,
+        {
+          id: nuevoId,
+          descripcion: "",
+          cantidad: "",
+          precio: "",
+          unidad: "unidad",
+        },
       ],
     });
   };
 
   const eliminarProducto = (id) => {
-    const nuevosProductos = formData.productos.filter(producto => producto.id !== id);
+    const nuevosProductos = formData.productos.filter(
+      (producto) => producto.id !== id
+    );
     setFormData({ ...formData, productos: nuevosProductos });
   };
 
   const calcularSubtotal = (producto) => {
-    return (parseFloat(producto.cantidad) || 0) * (parseFloat(producto.precio) || 0);
+    return (
+      (parseFloat(producto.cantidad) || 0) * (parseFloat(producto.precio) || 0)
+    );
   };
 
   const calcularTotal = () => {
@@ -110,13 +186,16 @@ const GenerarOrdenCompra = () => {
       total: calcularTotal(),
       igv: calcularIGV(),
       totalConIGV: calcularTotalConIGV(),
-      numeroOrden: `OC-${new Date().getFullYear()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
-      fechaGeneracion: new Date().toISOString().split('T')[0]
+      numeroOrden: `OC-${new Date().getFullYear()}-${Math.random()
+        .toString(36)
+        .substr(2, 9)
+        .toUpperCase()}`,
+      fechaGeneracion: new Date().toISOString().split("T")[0],
     };
-    
+
     console.log("Orden generada:", ordenCompra);
     setMostrarConfirmacion(false);
-    
+
     // Reset form
     setFormData({
       proveedor: "",
@@ -129,7 +208,9 @@ const GenerarOrdenCompra = () => {
       prioridad: "media",
       centroCosto: "",
       contactoProveedor: "",
-      productos: [{ id: 1, descripcion: "", cantidad: "", precio: "", unidad: "unidad" }],
+      productos: [
+        { id: 1, descripcion: "", cantidad: "", precio: "", unidad: "unidad" },
+      ],
     });
   };
 
@@ -138,133 +219,144 @@ const GenerarOrdenCompra = () => {
       baja: "bg-green-100 text-green-800",
       media: "bg-yellow-100 text-yellow-800",
       alta: "bg-orange-100 text-orange-800",
-      urgente: "bg-red-100 text-red-800"
+      urgente: "bg-red-100 text-red-800",
     };
     return colores[prioridad] || "bg-gray-100 text-gray-800";
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 py-8">
+    <div className="min-h-screen bg-slate-50 py-8">
       <div className="container mx-auto px-4">
-        {/* Encabezado */}
-        <header className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-2xl mb-4">
-            <span className="text-2xl">📋</span>
-          </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-3">
-            Generar Orden de Compra
-          </h1>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Complete el formulario para generar una nueva orden de compra
-          </p>
-        </header>
-
         <div className="max-w-6xl mx-auto">
-          <Card className="shadow-xl rounded-2xl border border-gray-200 overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+          <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+            <div className="bg-gradient-to-r from-[#4160BE] to-[#2A3E7A] text-white px-8 py-6">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                <CardTitle className="text-2xl font-bold">
-                  Nueva Orden de Compra
-                </CardTitle>
-                <Badge className={`mt-2 sm:mt-0 ${getColorPrioridad(formData.prioridad)}`}>
+                <div className="flex items-center gap-3">
+                  <FilePlus2 className="h-8 w-8" />
+                  <h2 className="text-2xl font-bold">
+                    Nueva Orden de Compra
+                  </h2>
+                </div>
+                <span
+                  className={`mt-2 sm:mt-0 px-3 py-1 text-sm font-medium rounded-full ${getColorPrioridad(
+                    formData.prioridad
+                  )}`}
+                >
                   Prioridad: {formData.prioridad.toUpperCase()}
-                </Badge>
+                </span>
               </div>
-            </CardHeader>
+            </div>
 
-            <CardContent className="p-8">
+            <div className="p-8">
               <form onSubmit={handleSubmit} className="space-y-8">
                 {/* Información General */}
                 <div className="space-y-6">
-                  <h3 className="text-xl font-semibold text-gray-800 border-b pb-2">
+                  <h3 className="text-xl font-semibold text-[#1E2C57] border-b border-gray-200 pb-2">
                     Información General
                   </h3>
-                  
+
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-[#1E2C57] mb-2">
                           Proveedor *
                         </label>
-                        <Input 
-                          name="proveedor" 
-                          value={formData.proveedor} 
-                          onChange={(e) => handleChange("proveedor", e.target.value)} 
+                        <IconInput
+                          icon={<Building2 />}
+                          name="proveedor"
+                          value={formData.proveedor}
+                          onChange={(e) =>
+                            handleChange("proveedor", e.target.value)
+                          }
                           placeholder="Nombre del proveedor"
-                          required 
+                          required
                         />
                       </div>
-                      
+
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-[#1E2C57] mb-2">
                           Contacto del Proveedor
                         </label>
-                        <Input 
-                          name="contactoProveedor" 
-                          value={formData.contactoProveedor} 
-                          onChange={(e) => handleChange("contactoProveedor", e.target.value)} 
+                        <IconInput
+                          icon={<Phone />}
+                          name="contactoProveedor"
+                          value={formData.contactoProveedor}
+                          onChange={(e) =>
+                            handleChange("contactoProveedor", e.target.value)
+                          }
                           placeholder="Teléfono o email de contacto"
                         />
                       </div>
-                      
+
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-[#1E2C57] mb-2">
                           Solicitante *
                         </label>
-                        <Input 
-                          name="solicitante" 
-                          value={formData.solicitante} 
-                          onChange={(e) => handleChange("solicitante", e.target.value)} 
+                        <IconInput
+                          icon={<User />}
+                          name="solicitante"
+                          value={formData.solicitante}
+                          onChange={(e) =>
+                            handleChange("solicitante", e.target.value)
+                          }
                           placeholder="Nombre del solicitante"
-                          required 
+                          required
                         />
                       </div>
                     </div>
-                    
+
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-[#1E2C57] mb-2">
                           Departamento
                         </label>
-                        <Select value={formData.departamento} onValueChange={(value) => handleChange("departamento", value)}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Seleccionar departamento" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {departamentos.map(depto => (
-                              <SelectItem key={depto} value={depto}>{depto}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <IconSelect
+                          icon={<Building />}
+                          value={formData.departamento}
+                          onChange={(e) =>
+                            handleChange("departamento", e.target.value)
+                          }
+                        >
+                          <option value="">Seleccionar departamento</option>
+                          {departamentos.map((depto) => (
+                            <option key={depto} value={depto}>
+                              {depto}
+                            </option>
+                          ))}
+                        </IconSelect>
                       </div>
-                      
+
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-[#1E2C57] mb-2">
                           Centro de Costo
                         </label>
-                        <Input 
-                          name="centroCosto" 
-                          value={formData.centroCosto} 
-                          onChange={(e) => handleChange("centroCosto", e.target.value)} 
+                        <IconInput
+                          icon={<Target />}
+                          name="centroCosto"
+                          value={formData.centroCosto}
+                          onChange={(e) =>
+                            handleChange("centroCosto", e.target.value)
+                          }
                           placeholder="Código de centro de costo"
                         />
                       </div>
-                      
+
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-[#1E2C57] mb-2">
                           Prioridad
                         </label>
-                        <Select value={formData.prioridad} onValueChange={(value) => handleChange("prioridad", value)}>
-                          <SelectTrigger>
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="baja">Baja</SelectItem>
-                            <SelectItem value="media">Media</SelectItem>
-                            <SelectItem value="alta">Alta</SelectItem>
-                            <SelectItem value="urgente">Urgente</SelectItem>
-                          </SelectContent>
-                        </Select>
+                        <IconSelect
+                          icon={<ShieldAlert />}
+                          value={formData.prioridad}
+                          onChange={(e) =>
+                            handleChange("prioridad", e.target.value)
+                          }
+                        >
+                          <option value="baja">Baja</option>
+                          <option value="media">Media</option>
+                          <option value="alta">Alta</option>
+                          <option value="urgente">Urgente</option>
+                        </IconSelect>
                       </div>
                     </div>
                   </div>
@@ -272,63 +364,76 @@ const GenerarOrdenCompra = () => {
 
                 {/* Detalles de Entrega y Pago */}
                 <div className="space-y-6">
-                  <h3 className="text-xl font-semibold text-gray-800 border-b pb-2">
+                  <h3 className="text-xl font-semibold text-[#1E2C57] border-b border-gray-200 pb-2">
                     Detalles de Entrega y Pago
                   </h3>
-                  
+
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-[#1E2C57] mb-2">
                           Fecha de Entrega *
                         </label>
-                        <Input 
-                          type="date" 
-                          name="fechaEntrega" 
-                          value={formData.fechaEntrega} 
-                          onChange={(e) => handleChange("fechaEntrega", e.target.value)} 
-                          required 
+                        <IconInput
+                          icon={<CalendarDays />}
+                          type="date"
+                          name="fechaEntrega"
+                          value={formData.fechaEntrega}
+                          onChange={(e) =>
+                            handleChange("fechaEntrega", e.target.value)
+                          }
+                          required
                         />
                       </div>
-                      
+
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-[#1E2C57] mb-2">
                           Términos de Pago
                         </label>
-                        <Select value={formData.terminosPago} onValueChange={(value) => handleChange("terminosPago", value)}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Seleccionar términos" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {terminosPagoOptions.map(termino => (
-                              <SelectItem key={termino} value={termino}>{termino}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <IconSelect
+                          icon={<CreditCard />}
+                          value={formData.terminosPago}
+                          onChange={(e) =>
+                            handleChange("terminosPago", e.target.value)
+                          }
+                        >
+                          <option value="">Seleccionar términos</option>
+                          {terminosPagoOptions.map((termino) => (
+                            <option key={termino} value={termino}>
+                              {termino}
+                            </option>
+                          ))}
+                        </IconSelect>
                       </div>
                     </div>
-                    
+
                     <div className="space-y-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-[#1E2C57] mb-2">
                           Dirección de Entrega
                         </label>
-                        <Input 
-                          name="direccionEntrega" 
-                          value={formData.direccionEntrega} 
-                          onChange={(e) => handleChange("direccionEntrega", e.target.value)} 
+                        <IconInput
+                          icon={<MapPin />}
+                          name="direccionEntrega"
+                          value={formData.direccionEntrega}
+                          onChange={(e) =>
+                            handleChange("direccionEntrega", e.target.value)
+                          }
                           placeholder="Dirección completa de entrega"
                         />
                       </div>
-                      
+
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-[#1E2C57] mb-2">
                           Notas Adicionales
                         </label>
-                        <Textarea 
-                          name="notas" 
-                          value={formData.notas} 
-                          onChange={(e) => handleChange("notas", e.target.value)} 
+                        <IconTextarea
+                          icon={<ClipboardPen />}
+                          name="notas"
+                          value={formData.notas}
+                          onChange={(e) =>
+                            handleChange("notas", e.target.value)
+                          }
                           placeholder="Instrucciones especiales o observaciones..."
                           rows="3"
                         />
@@ -339,119 +444,140 @@ const GenerarOrdenCompra = () => {
 
                 {/* Sección Productos */}
                 <div className="space-y-6">
-                  <div className="flex justify-between items-center">
-                    <h3 className="text-xl font-semibold text-gray-800">
+                  <div className="flex justify-between items-center border-b border-gray-200 pb-2">
+                    <h3 className="text-xl font-semibold text-[#1E2C57]">
                       Productos y Servicios
                     </h3>
-                    <Badge variant="secondary">
+                    <span className="px-3 py-1 text-sm font-medium text-gray-700 bg-gray-100 rounded-full">
                       {formData.productos.length} items
-                    </Badge>
+                    </span>
                   </div>
-                  
+
                   <div className="space-y-4">
                     {formData.productos.map((producto, index) => (
                       <div
                         key={producto.id}
                         className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start p-4 bg-gray-50 rounded-lg border"
                       >
-                        <div className="lg:col-span-5">
-                          <Input
-                            placeholder="Descripción del producto o servicio"
+                        <div className="lg:col-span-4">
+                          <IconInput
+                            icon={<Package />}
+                            placeholder="Descripción del producto"
                             value={producto.descripcion}
-                            onChange={(e) => handleProductoChange(index, "descripcion", e.target.value)}
-                            className="w-full"
+                            onChange={(e) =>
+                              handleProductoChange(
+                                index,
+                                "descripcion",
+                                e.target.value
+                              )
+                            }
                           />
                         </div>
-                        
+
                         <div className="lg:col-span-2">
-                          <Input
+                          <IconInput
+                            icon={<Hash />}
                             type="number"
                             placeholder="Cantidad"
                             value={producto.cantidad}
-                            onChange={(e) => handleProductoChange(index, "cantidad", e.target.value)}
+                            onChange={(e) =>
+                              handleProductoChange(
+                                index,
+                                "cantidad",
+                                e.target.value
+                              )
+                            }
                             min="1"
-                            className="w-full"
                           />
                         </div>
-                        
+
                         <div className="lg:col-span-2">
-                          <Select 
-                            value={producto.unidad} 
-                            onValueChange={(value) => handleProductoChange(index, "unidad", value)}
+                          <IconSelect
+                            icon={<Ruler />}
+                            value={producto.unidad}
+                            onChange={(e) =>
+                              handleProductoChange(
+                                index,
+                                "unidad",
+                                e.target.value
+                              )
+                            }
                           >
-                            <SelectTrigger>
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {unidades.map(unidad => (
-                                <SelectItem key={unidad} value={unidad}>{unidad}</SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                            {unidades.map((unidad) => (
+                              <option key={unidad} value={unidad}>
+                                {unidad}
+                              </option>
+                            ))}
+                          </IconSelect>
                         </div>
-                        
+
                         <div className="lg:col-span-2">
-                          <Input
+                          <IconInput
+                            icon={<DollarSign />}
                             type="number"
-                            placeholder="Precio unitario"
+                            placeholder="Precio (S/.)"
                             value={producto.precio}
-                            onChange={(e) => handleProductoChange(index, "precio", e.target.value)}
+                            onChange={(e) =>
+                              handleProductoChange(
+                                index,
+                                "precio",
+                                e.target.value
+                              )
+                            }
                             step="0.01"
                             min="0"
-                            className="w-full"
                           />
                         </div>
-                        
-                        <div className="lg:col-span-1 flex items-center justify-between">
-                          <span className="font-semibold text-gray-700 text-sm">
+
+                        <div className="lg:col-span-2 flex items-center justify-between">
+                          <span className="font-semibold text-gray-800 text-sm py-3">
                             S/ {calcularSubtotal(producto).toFixed(2)}
                           </span>
                           {formData.productos.length > 1 && (
-                            <Button
+                            <button
                               type="button"
-                              variant="destructive"
-                              size="sm"
                               onClick={() => eliminarProducto(producto.id)}
-                              className="ml-2"
+                              className="p-2 text-red-500 hover:text-red-700 hover:bg-red-100 rounded-full transition-colors"
+                              title="Eliminar item"
                             >
-                              ×
-                            </Button>
+                              <Trash2 className="h-5 w-5" />
+                            </button>
                           )}
                         </div>
                       </div>
                     ))}
                   </div>
 
-                  <Button 
-                    type="button" 
-                    onClick={agregarProducto} 
-                    variant="outline"
-                    className="w-full"
+                  <button
+                    type="button"
+                    onClick={agregarProducto}
+                    className="w-full flex items-center justify-center gap-2 py-3 px-4 border-2 border-dashed border-gray-300 text-gray-600 hover:text-[#4160BE] hover:border-[#4160BE] hover:bg-[#4160BE]/5 rounded-lg transition-all duration-200"
                   >
-                    + Agregar Producto
-                  </Button>
+                    <PlusCircle className="h-5 w-5" />
+                    Agregar Producto
+                  </button>
                 </div>
 
                 {/* Resumen y Total */}
-                <div className="bg-blue-50 rounded-xl p-6 space-y-4">
+                <div className="bg-[#4160BE]/5 rounded-xl p-6 space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                     <div className="text-center">
                       <p className="text-gray-600">Subtotal</p>
-                      <p className="text-2xl font-bold text-gray-800">
+                      <p className="text-2xl font-bold text-[#1E2C57]">
                         S/ {calcularTotal().toFixed(2)}
                       </p>
                     </div>
-                    
+
                     <div className="text-center">
                       <p className="text-gray-600">IGV (18%)</p>
-                      <p className="text-xl font-semibold text-gray-700">
+                      <p className="text-xl font-semibold text-[#1E2C57]">
                         S/ {calcularIGV().toFixed(2)}
                       </p>
                     </div>
-                    
+
                     <div className="text-center">
                       <p className="text-gray-600">Total</p>
-                      <p className="text-3xl font-bold text-blue-600">
+                      <p className="text-3xl font-bold text-[#4160BE]">
                         S/ {calcularTotalConIGV().toFixed(2)}
                       </p>
                     </div>
@@ -459,10 +585,9 @@ const GenerarOrdenCompra = () => {
                 </div>
 
                 {/* Botones de Acción */}
-                <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6 border-t">
-                  <Button 
-                    type="button" 
-                    variant="outline" 
+                <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6 border-t border-gray-200">
+                  <button
+                    type="button"
                     onClick={() => {
                       setFormData({
                         proveedor: "",
@@ -475,67 +600,92 @@ const GenerarOrdenCompra = () => {
                         prioridad: "media",
                         centroCosto: "",
                         contactoProveedor: "",
-                        productos: [{ id: 1, descripcion: "", cantidad: "", precio: "", unidad: "unidad" }],
+                        productos: [
+                          {
+                            id: 1,
+                            descripcion: "",
+                            cantidad: "",
+                            precio: "",
+                            unidad: "unidad",
+                          },
+                        ],
                       });
                     }}
-                    className="min-w-[200px]"
+                    className="flex items-center justify-center gap-2 bg-gray-100 text-gray-700 px-8 py-3 rounded-lg font-semibold shadow-sm hover:bg-gray-200 transition-all duration-200 min-w-[220px]"
                   >
+                    <RotateCcw className="h-5 w-5" />
                     Limpiar Formulario
-                  </Button>
-                  
-                  <Button 
-                    type="submit" 
-                    className="bg-blue-600 hover:bg-blue-700 min-w-[200px]"
-                    disabled={!formData.proveedor || !formData.solicitante || !formData.fechaEntrega}
+                  </button>
+
+                  <button
+                    type="submit"
+                    className="flex items-center justify-center gap-2 bg-[#4160BE] text-white px-8 py-3 rounded-lg font-semibold shadow-lg hover:bg-[#2A3E7A] transition-all duration-200 min-w-[220px] disabled:opacity-50"
+                    disabled={
+                      !formData.proveedor ||
+                      !formData.solicitante ||
+                      !formData.fechaEntrega ||
+                      formData.productos.length === 0 ||
+                      formData.productos.some(p => !p.descripcion || !p.cantidad || !p.precio)
+                    }
                   >
+                    <Send className="h-5 w-5" />
                     Generar Orden de Compra
-                  </Button>
+                  </button>
                 </div>
               </form>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
 
         {/* Modal de Confirmación */}
         {mostrarConfirmacion && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <Card className="max-w-md w-full">
-              <CardHeader>
-                <CardTitle className="text-center">Confirmar Orden de Compra</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
+          <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50">
+            <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full transform transition-all duration-300 scale-100 opacity-100">
+              <div className="p-6">
                 <div className="text-center">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-2xl">✅</span>
+                    <CheckCircle2 className="h-8 w-8 text-green-600" />
                   </div>
-                  <p className="text-gray-600 mb-4">
+                  <h3 className="text-xl font-bold text-[#1E2C57] mb-2">
+                    Confirmar Orden
+                  </h3>
+                  <p className="text-gray-600 mb-6">
                     ¿Está seguro de generar esta orden de compra?
                   </p>
-                  
-                  <div className="bg-gray-50 rounded-lg p-4 text-left space-y-2">
-                    <p><strong>Proveedor:</strong> {formData.proveedor}</p>
-                    <p><strong>Total:</strong> S/ {calcularTotalConIGV().toFixed(2)}</p>
-                    <p><strong>Productos:</strong> {formData.productos.length} items</p>
+
+                  <div className="bg-gray-50 rounded-lg p-4 text-left space-y-2 border border-gray-200">
+                    <p className="text-sm">
+                      <strong className="text-gray-700">Proveedor:</strong>{" "}
+                      <span className="text-gray-900">{formData.proveedor}</span>
+                    </p>
+                    <p className="text-sm">
+                      <strong className="text-gray-700">Total:</strong>{" "}
+                      <span className="text-[#4160BE] font-bold">
+                        S/ {calcularTotalConIGV().toFixed(2)}
+                      </span>
+                    </p>
+                    <p className="text-sm">
+                      <strong className="text-gray-700">Productos:</strong>{" "}
+                      <span className="text-gray-900">{formData.productos.length} items</span>
+                    </p>
                   </div>
                 </div>
-                
-                <div className="flex gap-3">
-                  <Button 
-                    variant="outline" 
-                    onClick={() => setMostrarConfirmacion(false)}
-                    className="flex-1"
-                  >
-                    Cancelar
-                  </Button>
-                  <Button 
-                    onClick={handleConfirmar}
-                    className="flex-1 bg-green-600 hover:bg-green-700"
-                  >
-                    Confirmar
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+              </div>
+              <div className="flex gap-3 bg-gray-50 p-4 rounded-b-2xl">
+                <button
+                  onClick={() => setMostrarConfirmacion(false)}
+                  className="flex-1 bg-gray-200 text-gray-800 py-3 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={handleConfirmar}
+                  className="flex-1 bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
+                >
+                  Confirmar
+                </button>
+              </div>
+            </div>
           </div>
         )}
       </div>
