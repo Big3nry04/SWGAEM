@@ -266,7 +266,10 @@ const DashboardPage = () => {
               </div>
 
               {/* Tarjetas de acceso rápido para Admin */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+            
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mt-10">
+
+
                 <div 
                   onClick={() => navigate('/productos')}
                   className="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition duration-200 cursor-pointer"
@@ -289,7 +292,30 @@ const DashboardPage = () => {
                     </div>
                   </div>
                 </div>
-
+{/* Nueva tarjeta para "Gestionar Compras" */}
+  <div 
+    onClick={() => navigate('/compras')}
+    className="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition duration-200 cursor-pointer"
+  >
+    <div className="p-5">
+      <div className="flex items-center">
+        <div className="flex-shrink-0">
+          <ShoppingCart className="h-6 w-6 text-amber-600" />
+        </div>
+        <div className="ml-5 w-0 flex-1">
+          <dl>
+            <dt className="text-sm font-medium text-gray-500 truncate">
+              Compras
+            </dt>
+            <dd className="text-lg font-medium text-gray-900">
+              
+              Gestionar Compras
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
                 <div 
                   onClick={() => navigate('/proveedores')}
                   className="bg-white overflow-hidden shadow rounded-lg hover:shadow-lg transition duration-200 cursor-pointer"
@@ -297,7 +323,7 @@ const DashboardPage = () => {
                   <div className="p-5">
                     <div className="flex items-center">
                       <div className="flex-shrink-0">
-                        <Building2 className="h-6 w-6 text-green-600" />
+                        <Building2 className="h-6 w-6 text-purple-600" />
                       </div>
                       <div className="ml-5 w-0 flex-1">
                         <dl>
@@ -335,6 +361,7 @@ const DashboardPage = () => {
                     </div>
                   </div>
                 </div>
+
 
                 <div 
                   onClick={() => navigate('/reportes')}

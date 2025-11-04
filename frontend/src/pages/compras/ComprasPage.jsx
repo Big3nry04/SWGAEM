@@ -152,15 +152,16 @@ const ComprasPage = () => {
   };
 
   // --- Funciones de Estilo ---
-  const getColorEstado = (estado) => {
-    const colores = {
-      completada: "bg-green-100 text-green-800 border-green-200",
-      pendiente: "bg-yellow-100 text-yellow-800 border-yellow-200",
-      proceso: "bg-[#4160BE]/10 text-[#4160BE] border-[#4160BE]/20", // Color primario
-      cancelada: "bg-red-100 text-red-800 border-red-200"
-    };
-    return colores[estado] || "bg-gray-100 text-gray-800 border-gray-200";
+const getColorEstado = (estado) => {
+  const colores = {
+    completada: "bg-green-100 text-green-800 border-green-200",
+    pendiente:  "bg-yellow-100 text-yellow-800 border-yellow-200",
+    proceso:    "bg-[#4160BE]/10 text-[#4160BE] border-[#4160BE]/20",
+    cancelada:  "bg-red-100 text-red-800 border-red-200",
   };
+  return colores[estado] || "bg-gray-100 text-gray-800 border-gray-200";
+};
+
 
   const getColorPrioridad = (prioridad) => {
     const colores = {
@@ -205,10 +206,9 @@ const ComprasPage = () => {
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
               {/* Título */}
               <div>
-                <h2 className="text-xl font-semibold text-[#1E2C57]">Listado de Compras</h2>
-                <p className="text-sm text-gray-600 mt-1">
-                  Gestiona y revisa todas las operaciones de compra
-                </p>
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Listado de Compras</h2>
+<p className="text-sm text-gray-600 mt-1">Gestiona y revisa todas las operaciones de compra</p>
+
               </div>
               
               {/* Controles y Acciones */}
@@ -248,7 +248,10 @@ const ComprasPage = () => {
                 {/* Exportar */}
                 <button 
                   onClick={handleExportar}
-                  className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 bg-white"
+                  className="px-4 py-2 rounded-xl text-sm font-medium
+                   bg-white border border-gray-200 text-gray-700
+                   hover:bg-gray-100 transition-colors
+                   flex items-center justify-center gap-2 shadow-sm"
                 >
                   <Download className="h-4 w-4" />
                   Exportar
@@ -271,31 +274,31 @@ const ComprasPage = () => {
             <table className="w-full">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 tracking-wide">
                     Código
                   </th>
-                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 tracking-wide">
                     Proveedor
                   </th>
-                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 tracking-wide">
                     Fecha
                   </th>
-                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 tracking-wide">
                     Responsable
                   </th>
-                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 tracking-wide">
                     Prioridad
                   </th>
-                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 tracking-wide">
                     Items
                   </th>
-                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 tracking-wide">
                     Monto
                   </th>
-                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 tracking-wide">
                     Estado
                   </th>
-                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                  <th className="py-3 px-4 text-left text-xs font-semibold text-gray-600 tracking-wide">
                     Acciones
                   </th>
                 </tr>
