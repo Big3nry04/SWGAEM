@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FileText, ShoppingCart, BarChart2 } from "lucide-react";
 
 export default function Reportes() {
+  const navigate = useNavigate();
+
   const [exportaciones] = useState([
     {
       id: 1,
@@ -39,14 +42,15 @@ export default function Reportes() {
             <div className="bg-blue-100 p-3 rounded-xl">
               <FileText className="text-blue-600" />
             </div>
-            <h2 className="ml-3 text-lg font-semibold text-gray-700">
-              Inventario
-            </h2>
+            <h2 className="ml-3 text-lg font-semibold text-gray-700">Inventario</h2>
           </div>
           <p className="text-sm text-gray-500 mb-4">
             Control de stock y productos. Genera reportes por categoría, estado y stock mínimo.
           </p>
-          <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition">
+          <button
+            onClick={() => navigate("/reportes/inventario")}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg transition"
+          >
             Generar Reporte
           </button>
         </div>
@@ -57,53 +61,49 @@ export default function Reportes() {
             <div className="bg-green-100 p-3 rounded-xl">
               <ShoppingCart className="text-green-600" />
             </div>
-            <h2 className="ml-3 text-lg font-semibold text-gray-700">
-              Compras
-            </h2>
+            <h2 className="ml-3 text-lg font-semibold text-gray-700">Compras</h2>
           </div>
           <p className="text-sm text-gray-500 mb-4">
             Analiza compras por proveedor, producto, fechas y responsables.
           </p>
-          <button className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition">
+          <button
+            onClick={() => navigate("/reportes/compras")}
+            className="w-full bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg transition"
+          >
             Generar Reporte
           </button>
         </div>
 
-        {/* Ventas */}
-        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200 hover:shadow-md transition">
+        {/* Ventas (placeholder) */}
+        <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200 opacity-80 hover:shadow-md transition">
           <div className="flex items-center mb-3">
             <div className="bg-indigo-100 p-3 rounded-xl">
               <BarChart2 className="text-indigo-600" />
             </div>
-            <h2 className="ml-3 text-lg font-semibold text-gray-700">
-              Ventas
-            </h2>
+            <h2 className="ml-3 text-lg font-semibold text-gray-700">Ventas</h2>
           </div>
           <p className="text-sm text-gray-500 mb-4">
             Revisa ventas por cliente, producto, períodos y vendedores asignados.
           </p>
-          <button className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg transition">
-            Generar Reporte
-          </button>
+          <button
+            onClick={() => navigate("/reportes/ventas")}
+           className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg transition"
+          >
+          Generar Reporte
+        </button>
         </div>
       </div>
 
       {/* Historial de exportaciones */}
       <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-200">
-        <h3 className="text-lg font-semibold text-gray-700 mb-3">
-          Historial de Exportaciones
-        </h3>
-        <p className="text-sm text-gray-500 mb-4">
-          Últimas exportaciones realizadas en el sistema
-        </p>
+        <h3 className="text-lg font-semibold text-gray-700 mb-3">Historial de Exportaciones</h3>
+        <p className="text-sm text-gray-500 mb-4">Últimas exportaciones realizadas en el sistema</p>
         <div className="divide-y divide-gray-100">
           {exportaciones.map((item) => (
             <div key={item.id} className="flex justify-between items-center py-3">
               <div>
                 <p className="font-medium text-gray-700">{item.nombre}</p>
-                <p className="text-xs text-gray-400">
-                  {item.fecha} · {item.usuario}
-                </p>
+                <p className="text-xs text-gray-400">{item.fecha} · {item.usuario}</p>
               </div>
               <button className="text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-lg">
                 {item.formato}

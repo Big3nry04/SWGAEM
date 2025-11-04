@@ -4,6 +4,10 @@ import LoginPage from './pages/auth/LoginPage';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import ProveedoresPage from './pages/admin/ProveedoresPage';
 import ReportesPage from './pages/dashboard/Reportes';
+import ReporteInventarioResultado from './pages/dashboard/ReporteInventarioResultado';
+import ReporteComprasResultado from './pages/dashboard/ReporteComprasResultado';
+import ReporteVentasResultado from './pages/dashboard/ReporteVentasResultado';
+
 
 function App() {
   return (
@@ -19,6 +23,9 @@ function App() {
           {/* Rutas principales */}
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/reportes" element={<ReportesPage />} />
+          <Route path="/reportes/inventario" element={<ReporteInventarioResultado />} />
+          <Route path="/reportes/compras" element={<ReporteComprasResultado />} />
+          <Route path="/reportes/ventas" element={<ReporteVentasResultado />} />
           <Route path="/proveedores" element={<ProveedoresPage />} />
           
           {/* Ruta para páginas no encontradas */}
