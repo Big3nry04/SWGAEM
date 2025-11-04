@@ -1,8 +1,42 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, FileText, Download, Printer, Eye } from "lucide-react";
 
 export default function GenerarComprobante() {
   const navigate = useNavigate();
+
+  // Ventas completadas simuladas (local)
+  const [ventasCompletadas] = useState([
+    { id: 1, cliente: "Juan Pérez", total: 250.5 },
+    { id: 2, cliente: "María García", total: 430.75 },
+  ]);
+
+  const [ventaSeleccionada, setVentaSeleccionada] = useState("");
+  const [tipoComprobante, setTipoComprobante] = useState("");
+  const [comprobantes, setComprobantes] = useState([]);
+  const [mensaje, setMensaje] = useState("");
+
+  const generarComprobante = () => {
+    if (!ventaSeleccionada || !tipoComprobante) {
+      setMensaje("Por favor, seleccione una venta y un tipo de comprobante.");
+      return;
+    }
+
+    const venta = ventasCompletadas.find(
+      (v) => v.id === parseInt(ventaSeleccionada)
+    );
+
+    const nuevoComprobante = {
+      id: comprobantes.length + 1,
+      cliente: venta.cliente,
+      tipo: tipoComprobante,
+      total: venta.total,
+      fecha: new Date().toLocaleDateString(),
+    };
+
+    setComprobantes([...comprobantes, nuevoComprobante]);
+    setMensaje(`${tipoComprobante} generada para ${venta.cliente}`);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 p-6">
@@ -42,10 +76,17 @@ export default function GenerarComprobante() {
               <label className="block text-sm font-medium text-gray-600 mb-2">
                 Venta a Facturar *
               </label>
-              <select className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none">
-                <option>Seleccionar venta completada</option>
-                <option>Venta #001 - Cliente: Juan Pérez</option>
-                <option>Venta #002 - Cliente: María García</option>
+              <select
+                value={ventaSeleccionada}
+                onChange={(e) => setVentaSeleccionada(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none"
+              >
+                <option value="">Seleccionar venta completada</option>
+                {ventasCompletadas.map((v) => (
+                  <option key={v.id} value={v.id}>
+                    Venta #{v.id} - Cliente: {v.cliente} (S/ {v.total.toFixed(2)})
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -54,15 +95,30 @@ export default function GenerarComprobante() {
               <label className="block text-sm font-medium text-gray-600 mb-2">
                 Tipo de Comprobante *
               </label>
-              <select className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none">
-                <option>Boleta de Venta (para personas naturales)</option>
-                <option>Factura (para empresas con RUC)</option>
+              <select
+                value={tipoComprobante}
+                onChange={(e) => setTipoComprobante(e.target.value)}
+                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none"
+              >
+                <option value="">Seleccione tipo</option>
+                <option value="Boleta de Venta">Boleta de Venta</option>
+                <option value="Factura">Factura</option>
               </select>
             </div>
 
+            {/* Mensaje */}
+            {mensaje && (
+              <p className="text-sm text-green-600 font-medium bg-green-50 border border-green-200 rounded-lg p-2">
+                {mensaje}
+              </p>
+            )}
+
             {/* Botones */}
             <div className="flex flex-wrap gap-3 mt-4">
-              <button className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition w-full md:w-auto">
+              <button
+                onClick={generarComprobante}
+                className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg transition w-full md:w-auto"
+              >
                 <Download size={18} />
                 Generar y Descargar PDF
               </button>
@@ -99,19 +155,48 @@ export default function GenerarComprobante() {
           <div className="bg-white border border-gray-200 rounded-2xl shadow p-5">
             <h3 className="text-lg font-semibold mb-3 text-blue-600">Estadísticas</h3>
             <ul className="text-sm text-gray-600 space-y-2">
-              <li>Ventas Completadas: <span className="text-gray-800 font-medium">0</span></li>
-              <li>Total Facturable: <span className="text-blue-600 font-semibold">S/ 0.00</span></li>
-              <li>Comprobantes Disponibles: <span className="text-gray-800 font-medium">0</span></li>
+              <li>
+                Ventas Completadas:{" "}
+                <span className="text-gray-800 font-medium">
+                  {ventasCompletadas.length}
+                </span>
+              </li>
+              <li>
+                Total Facturable:{" "}
+                <span className="text-blue-600 font-semibold">
+                  S/{" "}
+                  {ventasCompletadas
+                    .reduce((acc, v) => acc + v.total, 0)
+                    .toFixed(2)}
+                </span>
+              </li>
+              <li>
+                Comprobantes Generados:{" "}
+                <span className="text-gray-800 font-medium">
+                  {comprobantes.length}
+                </span>
+              </li>
             </ul>
           </div>
 
           {/* Actividad reciente */}
           <div className="bg-white border border-gray-200 rounded-2xl shadow p-5 text-center">
             <h3 className="text-lg font-semibold mb-3 text-blue-600">Actividad Reciente</h3>
-            <p className="text-sm text-gray-500">No hay actividad reciente</p>
+            {comprobantes.length === 0 ? (
+              <p className="text-sm text-gray-500">No hay actividad reciente</p>
+            ) : (
+              <ul className="text-sm text-gray-600 space-y-2">
+                {comprobantes.map((c) => (
+                  <li key={c.id}>
+                    {c.tipo} - {c.cliente} ({c.fecha})
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
       </div>
     </div>
   );
 }
+

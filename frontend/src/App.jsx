@@ -14,7 +14,7 @@ function App() {
       <div className="min-h-screen bg-gray-50">
         <Routes>
           {/* Redirigir la ruta raíz al login */}
-          <Route path="/" element={<Navigate to="/venta" replace />} />
+          <Route path="/" element={<Navigate to="/login" replace />} />
           
           {/* Rutas de autenticación */}
           <Route path="/login" element={<LoginPage />} />
