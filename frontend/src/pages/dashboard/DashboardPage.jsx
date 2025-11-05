@@ -285,7 +285,7 @@ const DashboardPage = () => {
                             Productos
                           </dt>
                           <dd className="text-lg font-medium text-gray-900">
-                            Gestionar Inventario
+                            Gestión de Inventario
                           </dd>
                         </dl>
                       </div>
@@ -354,7 +354,7 @@ const DashboardPage = () => {
                             Ventas
                           </dt>
                           <dd className="text-lg font-medium text-gray-900">
-                            Gestionar Pedidos
+                            Gestión de Ventas
                           </dd>
                         </dl>
                       </div>
@@ -375,10 +375,10 @@ const DashboardPage = () => {
                       <div className="ml-5 w-0 flex-1">
                         <dl>
                           <dt className="text-sm font-medium text-gray-500 truncate">
-                            Reportes
+                            Analisis
                           </dt>
                           <dd className="text-lg font-medium text-gray-900">
-                            Análisis de Datos
+                            Gestion de Reporte
                           </dd>
                         </dl>
                       </div>
