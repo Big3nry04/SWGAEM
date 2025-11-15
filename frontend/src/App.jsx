@@ -16,7 +16,10 @@ import NuevaVenta from './pages/ventas/NuevaVenta';
 import HistorialVentas from "./pages/ventas/HistorialVentas";
 import GenerarComprobante from './pages/ventas/GenerarComprobante';
 
-import GestionInventario from './pages/productos/GestionProducto';
+import GestionInventario from './pages/productos/GestionInventario';
+import ProductosPage from './pages/productos/ProductosPage';
+import ControlInventarioPage from './pages/productos/ControlInventarioPage';
+import MovimientosPage from './pages/productos/MovimientosPage';
 
 import ReportesPage from './pages/reportes/Reportes';
 import ReporteInventarioResultado from './pages/reportes/ReporteInventarioResultado';
@@ -58,7 +61,12 @@ function App() {
           </Route>
 
           {/* PRODUCTOS */}
-          <Route path="/productos" element={<GestionInventario />} />
+          <Route path="/productos">
+            <Route index element={<Navigate to="/productos/lista" replace />} />
+            <Route path="lista" element={<ProductosPage />} />
+            <Route path="control" element={<ControlInventarioPage />} />
+            <Route path="movimientos" element={<MovimientosPage />} />
+          </Route>
 
           {/* REPORTES */}
           <Route path="/reportes">
