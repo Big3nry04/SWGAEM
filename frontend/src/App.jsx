@@ -11,9 +11,10 @@ import HistorialPage from "./pages/compras/HistorialPage";
 import GenerarOrden from "./pages/compras/GenerarOrden";
 import GestionarProveedores from "./pages/compras/GestionarProveedores";
 
-import GestionVentas from "./pages/ventas/VentasPage";
+import LayoutVentas from './pages/ventas/LayoutVentas';
+import VentasPage from './pages/ventas/VentasPage';
 import NuevaVenta from './pages/ventas/NuevaVenta';
-import HistorialVentas from "./pages/ventas/HistorialVentas";
+import HistorialVentas from './pages/ventas/HistorialVentas';
 import GenerarComprobante from './pages/ventas/GenerarComprobante';
 
 import GestionInventario from './pages/productos/GestionInventario';
@@ -53,12 +54,12 @@ function App() {
           </Route>
 
           {/* VENTAS */}
-          <Route path="/ventas">
-            <Route index element={<GestionVentas />} />
-            <Route path="nueva" element={<NuevaVenta />} />
-            <Route path="historial" element={<HistorialVentas />} />
-            <Route path="comprobante" element={<GenerarComprobante />} />
-          </Route>
+          <Route path="/ventas" element={<LayoutVentas />}>
+          <Route index element={<VentasPage />} />
+          <Route path="nueva" element={<NuevaVenta />} />
+          <Route path="historial" element={<HistorialVentas />} />
+          <Route path="comprobante" element={<GenerarComprobante />} />
+        </Route>
 
           {/* PRODUCTOS */}
           <Route path="/productos">
