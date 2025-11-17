@@ -148,7 +148,7 @@ export default function HistorialVentas() {
         )}
       </div>
 
-      {/* Resultados */}
+      {/*Resultados*/}
       <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
         <div className="flex items-center gap-2 mb-6">
           <div className="bg-blue-100 p-2 rounded-lg">

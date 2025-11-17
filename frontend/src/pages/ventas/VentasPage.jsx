@@ -511,7 +511,7 @@ const VentasPage = () => {
         </div>
       </div>
 
-      {/* Modal de detalle */}
+      {/*Modal de detalle*/}
       {mostrarModal && ventaSeleccionada && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-sm z-50 p-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-8">

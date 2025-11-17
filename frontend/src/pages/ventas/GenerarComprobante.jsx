@@ -147,7 +147,7 @@ export default function GenerarComprobante() {
             </div>
           </div>
 
-          {/* Actividad reciente */}
+          {/*Actividad reciente*/}
           <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
             <h3 className="text-lg font-bold text-gray-900 mb-4">Actividad Reciente</h3>
             <div className="text-center py-8">

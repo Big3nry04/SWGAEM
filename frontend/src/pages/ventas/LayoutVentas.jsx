@@ -1,4 +1,4 @@
-// src/pages/ventas/LayoutVentas.jsx
+
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
